@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShirtStore - Black Shirts</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand">ShirtStore</span>
+    <nav>
+      <a href="#products">Products</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1 id="products">Black Shirts</h1>
+
+    <section class="product-grid">
+      <article class="product">
+        <div class="thumb"></div>
+        <h2>Black Shirt A</h2>
+        <p class="price">Price: ₹799</p>
+      </article>
+
+      <article class="product">
+        <div class="thumb"></div>
+        <h2>Black Shirt B</h2>
+        <p class="price">Price: ₹899</p>
+      </article>
+
+      <article class="product">
+        <div class="thumb"></div>
+        <h2>Black Shirt C</h2>
+        <p class="price">Price: ₹699</p>
+      </article>
+    </section>
+
+    <section class="checkout">
+      <button id="buy_now" class="buy-button">Buy Now</button>
+      <p id="purchase-status" class="status" hidden></p>
+    </section>
+
+    <section id="about" class="about">
+      <p>ShirtStore is a local demo page used to test browser automation.</p>
+    </section>
+  </main>
+
+  <script>
+    const buyButton = document.getElementById("buy_now");
+    const status = document.getElementById("purchase-status");
+
+    buyButton.addEventListener("click", () => {
+      buyButton.textContent = "Purchased";
+      buyButton.classList.add("clicked");
+      status.textContent = "Buy Now was clicked at " + new Date().toLocaleTimeString();
+      status.hidden = false;
+    });
+  </script>
+</body>
+</html>
