@@ -24,7 +24,10 @@ export interface PageInfo {
 
 export interface ReasonRequest {
   task: string;
+  /** Sanitized page: sensitive values are already replaced by placeholders. */
   page: PageInfo;
+  /** Placeholder names present in the page, e.g. ["[EMAIL_1]", "[PHONE_1]"]. Never values. */
+  placeholders: string[];
 }
 
 export interface ActionResponse {

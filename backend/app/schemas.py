@@ -27,7 +27,11 @@ class PageInfo(BaseModel):
 
 class ReasonRequest(BaseModel):
     task: str = Field(..., min_length=1)
-    page: PageInfo
+    page: PageInfo = Field(..., description="Sanitized page: sensitive values already replaced by placeholders")
+    placeholders: list[str] = Field(
+        default_factory=list,
+        description="Placeholder names present in the page, e.g. [EMAIL_1]. Never values.",
+    )
 
 
 class ActionResponse(BaseModel):

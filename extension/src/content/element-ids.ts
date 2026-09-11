@@ -50,7 +50,11 @@ export function ensureElementIds(elements: HTMLElement[]): void {
 }
 
 export function findElementByPsId(id: string): HTMLElement | null {
-  return document.querySelector<HTMLElement>(`[${PS_ID_ATTRIBUTE}="${CSS.escape(id)}"]`);
+  // Compare attribute values directly so the id never needs CSS escaping.
+  for (const element of document.querySelectorAll<HTMLElement>(`[${PS_ID_ATTRIBUTE}]`)) {
+    if (element.getAttribute(PS_ID_ATTRIBUTE) === id) return element;
+  }
+  return null;
 }
 
 export function getAccessibleText(element: HTMLElement): string {
@@ -68,10 +72,25 @@ export function getAccessibleText(element: HTMLElement): string {
 function deriveBaseId(element: HTMLElement): string {
   if (element.id) return ID_PREFIX + slugify(element.id);
 
-  const text = getAccessibleText(element);
+  // Form fields never contribute their value to the ID: a filled email or
+  // card field would otherwise leak its contents through the identifier.
+  const text = isFormField(element) ? fieldLabel(element) : getAccessibleText(element);
   if (text) return ID_PREFIX + slugify(text);
 
   return "";
+}
+
+function isFormField(element: HTMLElement): boolean {
+  return element.tagName === "INPUT" || element.tagName === "TEXTAREA";
+}
+
+function fieldLabel(element: HTMLElement): string {
+  return (
+    element.getAttribute("name") ||
+    element.getAttribute("aria-label") ||
+    element.getAttribute("placeholder") ||
+    ""
+  ).trim();
 }
 
 function slugify(value: string): string {
