@@ -4,6 +4,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes.reason import router as reason_router
+from app.safe_print import make_console_tolerant
+
+make_console_tolerant()
 
 # Chrome extension origins look like chrome-extension://<32 lowercase letters>.
 # The regex allows any locally loaded extension during development.

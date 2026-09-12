@@ -83,7 +83,7 @@ class GeminiReasoner:
             )
             payload["contents"].append({"role": "model", "parts": [{"text": text}]})
             payload["contents"].append({"role": "user", "parts": [{"text": correction}]})
-            print(f"[llm] correction round: {first}")
+            safe_print(f"[llm] correction round: {first}")
             retry_text = self._extract_text(self._post(payload))
             if self._debug:
                 self._dump("RAW REPLY FROM GEMINI (correction round)", retry_text)
@@ -128,7 +128,7 @@ class GeminiReasoner:
                     raise LLMRequestError(f"Gemini request failed: {type(exc).__name__}: {exc}") from exc
 
                 if response.status_code == 200:
-                    print(f"[llm] gemini model={model} attempt={attempt}")
+                    safe_print(f"[llm] gemini model={model} attempt={attempt}")
                     return self._decode(response)
 
                 excerpt = response.text[:MAX_ERROR_EXCERPT]

@@ -33,7 +33,7 @@ def get_reasoner() -> LLMReasoner:
 @router.post("/reason", response_model=ActionResponse)
 def reason(request: ReasonRequest, reasoner: LLMReasoner = Depends(get_reasoner)) -> ActionResponse:
     # Log counts and identifiers only. Page text is never printed.
-    print(
+    safe_print(
         f"[reason] task={request.task!r} url={request.page.url} "
         f"elements={len(request.page.elements)} placeholders={len(request.placeholders)}"
     )
@@ -52,7 +52,7 @@ def reason(request: ReasonRequest, reasoner: LLMReasoner = Depends(get_reasoner)
         safe_print(f"[reason] invalid action: {exc}")
         raise HTTPException(status_code=502, detail=f"Invalid action from reasoning provider: {exc}") from exc
 
-    print(
+    safe_print(
         f"[reason] provider={reasoner.name} action={action.action} "
         f"target={action.target} confidence={action.confidence:.2f}"
     )
